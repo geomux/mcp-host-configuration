@@ -10,14 +10,14 @@ Ansible playbook that configures an existing host with a remote MCP server and a
 
 ```
 System:  {user} <--> mcp-client-console <--> internet <--> {host:80} <--> nginx <--> mcp-server-remote <--> tools
-Stack:   site.yaml <--> roles/mcp_server + roles/nginx <--> templates/*.j2 <--> group_vars/all.yaml
+Stack:   playbook.yaml <--> roles/mcp_server + roles/nginx <--> templates/*.j2 <--> group_vars/all.yaml
 ```
 
 ## Repo Layout
 
 | File / Folder             | Purpose                                                               |
 | ------------------------- | --------------------------------------------------------------------- |
-| `site.yaml`                | The playbook, runs both roles against your inventory                  |
+| `playbook.yaml`                | The playbook, runs both roles against your inventory                  |
 | `ansible.cfg`             | Points Ansible at the inventory, contains defaults                    |
 | `inventory/hosts.yaml`     | The hosts to configure (IP, SSH user, key)                            |
 | `group_vars/all.yaml`      | Your settings: server name, port, auth token (edit before first run)  |
@@ -32,7 +32,7 @@ Requires Ansible on your workstation and SSH access to the target host. The targ
 git clone https://github.com/geomux/mcp-host-setup.git
 cd mcp-host-setup
 # edit inventory/hosts.yaml and group_vars/all.yaml first (see Configuration below)
-ansible-playbook site.yaml
+ansible-playbook playbook.yaml
 ```
 **Install for Ansible prior (if needed)**
 ```bash
@@ -68,9 +68,9 @@ The server binds 127.0.0.1 on the host, only nginx faces the internet. Rerun the
 | Command                                   | What it does                                          |
 | ----------------------------------------- | ------------------------------------------------------ |
 | `ansible all -m ping`                     | Confirm SSH connectivity before doing anything else    |
-| `ansible-playbook site.yaml --check --diff`| Dry run, shows what would change without changing it   |
-| `ansible-playbook site.yaml`               | Configure the host (safe to rerun anytime)             |
-| `ansible-playbook site.yaml --tags nginx`  | Rerun just the nginx role                              |
+| `ansible-playbook playbook.yaml --check --diff`| Dry run, shows what would change without changing it   |
+| `ansible-playbook playbook.yaml`               | Configure the host (safe to rerun anytime)             |
+| `ansible-playbook playbook.yaml --tags nginx`  | Rerun just the nginx role                              |
 
 Two ways to use this repo: 
 1) SSH option... (run the playbook from your workstation against a live host)
