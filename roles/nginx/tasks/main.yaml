@@ -12,17 +12,17 @@
 - name: Configure reverse proxy Config
   ansible.builtin.template:
     src: mcp.conf.j2
-    dest: /etc/nginx/sites-available/nginx.conf
+    dest: /etc/nginx/sites-available/mcp.conf
 notify: Reload nginx
 
-- name: Enable the site
+- name: Create symlink for mcp.conf in sites-enabled
   ansible.builtin.file:
     src: /etc/nginx/sites-available/mcp.conf
     dest: /etc/nginx/sites-enabled/mcp.conf
     state: link
   notify: Reload nginx
 
-- name: Disable the default site
+- name: Delete symlink for default site in sites-enabled
   ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
     state: absent
