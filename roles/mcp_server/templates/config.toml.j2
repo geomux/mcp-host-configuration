@@ -1,0 +1,75 @@
+# config.toml.j2
+# [TEMPLATE] .j2 version of the config_defaul.toml file in the mcp-server-remote package.
+
+[server]
+name = "{{ mcp_server_name }}"
+host = "127.0.0.1"
+port = {{ mcp_server_port }}
+path = "{{ mcp_server_path }}"
+
+[auth]
+token = "{{ mcp_auth_token }}"
+
+
+[tools] # configurable tool permissions (uses principle of least privileged)
+# require human [y/n] approval on client side before any tool or command tagged destructive runs
+confirm_destructive_actions = true
+# "/" allows full machine control (REMOVE FOR XTRA SECURITY), "/123abc" specifies actual path
+allowed_roots = [
+    "/",
+    "/var/log"
+]
+
+[tools.commands]
+# allowed commands
+linux = [
+    # who / what am i
+    "hostname",
+    "whoami",
+    "id",
+    "uname",
+    "uptime",
+    "hostnamectl",
+    # cpu / memory / load
+    "lscpu",
+    "nproc",
+    "free",
+    "vmstat",
+    "top",
+    # disk
+    "df",
+    "lsblk",
+    "mount",
+    # network
+    "ip",
+    "ss",
+    # processes
+    "ps",
+    # services & logs (systemd)
+    "systemctl",
+    "journalctl",
+    # packages
+    "dpkg",
+    # time
+    "date",
+    "timedatectl",
+    # sessions
+    "who",
+    "w",
+    "last",
+    # file inspection, read-only readers, /etc/os-release via cat
+    "ls",
+    "cat",
+    "head",
+    "tail",
+    "grep",
+    "stat",
+    "wc",
+    "du",
+    "pwd",
+    "which",
+    "find", # POSSIBLE BLACK SHEEP - bypasses a lot of security in limited access to filesystem
+]
+
+
+
