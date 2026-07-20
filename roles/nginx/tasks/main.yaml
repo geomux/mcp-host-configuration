@@ -1,0 +1,35 @@
+# main.yaml
+# List of tasks to run within nginx role.
+
+---
+
+- name: Install nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+    update_cache: true
+
+- name: Configure reverse proxy Config
+  ansible.builtin.template:
+    src: mcp.conf.j2
+    dest: /etc/nginx/sites-available/nginx.conf
+notify: Reload nginx
+
+- name: Enable the site
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/mcp.conf
+    dest: /etc/nginx/sites-enabled/mcp.conf
+    state: link
+  notify: Reload nginx
+
+- name: Disable the default site
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Reload nginx
+
+- name: Ensure nginx is enabled and running
+  ansible.builtin.systemd_service:
+    name: nginx
+    enabled: true
+    state: started
