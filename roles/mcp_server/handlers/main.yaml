@@ -1,4 +1,4 @@
-# main.yml
+# main.yaml
 # Handler to run at end of an Ansible playbook play, restarts MCP server.
 
 ---
