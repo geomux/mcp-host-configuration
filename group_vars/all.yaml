@@ -10,3 +10,5 @@ mcp_auth_token: "paste-here" # :~$ openssl rand -hex 32, then paste result here
 mcp_service_user: mcp # names unprivleged user account that runs the server
 pipx_home: /opt/pipx # pipx stores venvs for packages here
 pipx_bin_dir: /user/local/bin # pipx links the server executable here
+
+
