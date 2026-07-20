@@ -1,4 +1,4 @@
-# site.yaml
+# playbook.yaml
 # The Ansible playbook. This file activates the roles that configure the host machine.
 
 ---
