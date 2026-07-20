@@ -4,6 +4,9 @@ Ansible playbook that configures an existing host with a remote MCP server and a
 
 *Intended for hosts you control and can SSH into. This repo builds no infrastructure, images/containers, it only configures what already exists. If you want a containerized MCP tool option instead, see mcp-sandbox-setup repo.*
 
+**Control Node OS: Linux, macOS, WSL.**
+**Target Node OS: Linux (Ubuntu/Debian)**
+
 ```
 System:  {user} <--> mcp-client-console <--> internet <--> {host:80} <--> nginx <--> mcp-server-remote <--> tools
 Stack:   site.yml <--> roles/mcp_server + roles/nginx <--> templates/*.j2 <--> group_vars/all.yml
