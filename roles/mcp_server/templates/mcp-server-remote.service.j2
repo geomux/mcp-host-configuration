@@ -1,0 +1,15 @@
+# mcp-server-remote.service.j2
+# [TEMPLATE] .j2 version of a systemd service that handles running the mcp-server-remote MCP server.
+
+[Unit]
+Description=mcp-server-remote
+After=network.target
+
+[Service]
+User={{ mcp_service_user }}
+ExecStart={{ mcp_venv_dir }}/bin/mcp-server-remote
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
