@@ -19,7 +19,7 @@ Stack:   site.yaml <--> roles/mcp_server + roles/nginx <--> templates/*.j2 <--> 
 | ------------------------- | --------------------------------------------------------------------- |
 | `site.yaml`                | The playbook, runs both roles against your inventory                  |
 | `ansible.cfg`             | Points Ansible at the inventory, contains defaults                    |
-| `inventory/hosts.ini`     | The hosts to configure (IP, SSH user, key)                            |
+| `inventory/hosts.yaml`     | The hosts to configure (IP, SSH user, key)                            |
 | `group_vars/all.yaml`      | Your settings: server name, port, auth token (edit before first run)  |
 | `roles/mcp_server/`       | Installs mcp-server-remote, writes config.toml, adds a systemd unit   |
 | `roles/nginx/`            | Installs nginx and proxies host port 80 to the server port            |
@@ -31,7 +31,7 @@ Requires Ansible on your workstation and SSH access to the target host. The targ
 ```bash
 git clone https://github.com/geomux/mcp-host-setup.git
 cd mcp-host-setup
-# edit inventory/hosts.ini and group_vars/all.yaml first (see Configuration below)
+# edit inventory/hosts.yaml and group_vars/all.yaml first (see Configuration below)
 ansible-playbook site.yaml
 ```
 **Install for Ansible prior (if needed)**
@@ -43,9 +43,13 @@ pipx install --include-deps ansible
 
 Point the inventory at your host:
 
-```ini
-[mcp_hosts]
-box1 ansible_host=203.0.113.10 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/mykey.pem
+```yaml
+mcp_hosts:
+  hosts:
+    box1:
+      ansible_host: 203.0.113.10
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/mykey.pem
 ```
 
 Then set your values in `group_vars/all.yaml`:
