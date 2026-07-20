@@ -1,0 +1,9 @@
+# main.yaml
+# Handler to run at end of an Ansible playbook play, restarts nginx reverse proxy.
+
+---
+
+- name: Reload nginx
+  ansible.builtin.systemd_service:
+    name: nginx
+    state: reloaded
