@@ -1,0 +1,19 @@
+# site.yaml
+# The Ansible playbook. This file activates the roles that configure the host machine.
+
+---
+
+- name: Configure host with mcp-server-remote behind nginx reverse proxy
+  hosts: mcp_hosts
+  become: true # tasks run via root 'sudo' access
+  roles:
+    - role: nginx
+      tag: nginx
+    - role: mcp_server
+      tag: mcp_server
+
+- name: Verify target node OS is supported
+  ansible.builtin.assert:
+    that: ansible_facts['os_family'] == 'Debian'
+    fail_msg: >-
+      mcp-host-setup Repo currently requires host machine (target node) OS to be Debian/Ubuntu. Please install on a host with an OS from that family. ...(Linux is badass anyways, why not use it)...
