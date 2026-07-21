@@ -27,7 +27,7 @@
 
 - name: Create config dictionary
   ansible.builtin.file:
-    path: "/home/{{ mcp_service_user }}/.config.mcp-server-remote"
+    path: "/home/{{ mcp_service_user }}/.config/mcp-server-remote"
     state: directory
     owner: "{{ mcp_service_user }}"
     mode: "0700"
