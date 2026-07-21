@@ -1,0 +1,5 @@
+# .gitattributes
+# Set GitHub Linguist to default its language for this repo to "=Ansible"
+
+*.j2 linguist-documentation
+*.yaml linguist-language=Ansible
