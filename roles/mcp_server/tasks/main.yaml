@@ -15,6 +15,8 @@
   ansible.builtin.user:
     name: "{{ mcp_service_user }}"
     system: true
+    create_home: true
+    home: "/home/{{ mcp_service_user }}"
     shell: /usr/sbin/nologin # denies external SSH access
 
 - name: Install MCP server package via pipx
