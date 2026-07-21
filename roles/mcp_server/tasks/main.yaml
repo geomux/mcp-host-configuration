@@ -19,6 +19,7 @@
 
 - name: Install MCP server package via pipx
   ansible.builtin.command: pipx install mcp-server-remote
+  environment:
     PIPX_HOME: "{{ pipx_home }}"
     PIPX_BIN_DIR: "{{ pipx_bin_dir }}"
   args:
