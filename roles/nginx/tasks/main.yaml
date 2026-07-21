@@ -13,7 +13,7 @@
   ansible.builtin.template:
     src: mcp.conf.j2
     dest: /etc/nginx/sites-available/mcp.conf
-notify: Reload nginx
+  notify: Reload nginx
 
 - name: Create symlink for mcp.conf in sites-enabled
   ansible.builtin.file:
