@@ -7,7 +7,7 @@ After=network.target
 
 [Service]
 User={{ mcp_service_user }}
-ExecStart={{ mcp_bin_dir }}/bin/mcp-server-remote
+ExecStart={{ pipx_bin_dir }}/bin/mcp-server-remote
 Restart=on-failure
 
 [Install]
