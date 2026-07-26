@@ -36,6 +36,7 @@ ansible-playbook playbook.yaml
 ```
 **Install for Ansible prior (if needed)**
 ```bash
+sudo apt update && sudo apt install pipx
 pipx install --include-deps ansible
 ```
 
