@@ -4,10 +4,10 @@
 ---
 
 - name: Verify target node OS is supported
-  ansible.builtin.assert:
-    that: ansible_facts['os_family'] == 'Debian'
-    fail_msg: >-
-      mcp-host-setup Repo currently requires host machine (target node) OS to be Debian/Ubuntu. Please install on a host with an OS from that family. ...(Linux is badass anyways, why not use it)...
+  hosts: mcp_hosts
+  roles:
+  - role: os_check
+    tags: os_check
 
 - name: Configure host with mcp-server-remote behind nginx reverse proxy
   hosts: mcp_hosts
