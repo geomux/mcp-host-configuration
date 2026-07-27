@@ -3,6 +3,12 @@
 
 ---
 
+- name: Verify target node accessible via SSH
+  hosts: mcp_hosts
+  roles:
+  - role: ssh_check
+    tags: ssh_check
+
 - name: Verify target node OS is supported
   hosts: mcp_hosts
   roles:
