@@ -1,6 +1,8 @@
 # main.yaml
 # Tasks to run to check if operating system is supported for the MCP server config play.
 
+---
+
 - name: Check OS type and if Debian family, return message if not
   ansible.builtin.assert:
     that: ansible_facts['os_family'] == 'Debian'
