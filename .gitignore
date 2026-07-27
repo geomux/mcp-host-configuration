@@ -1,4 +1,8 @@
 # .gitignore
 # Ignore listed files below when commits are pushed to github repo.
 
+# Ignore real inventory "hosts"
+inventory/hosts.yaml
 
+# Ignore real group variables
+group_vars/all.yaml
