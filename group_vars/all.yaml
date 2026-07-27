@@ -1,6 +1,9 @@
 # all.yaml
 # Editble main settings for defining the installed MCP server's config file.
 
+
+# ---NOTE---
+# Remove the .example from this files name prior to running the Ansible playbook...
 ---
 
 mcp_server_name: "Box_1" # change as desired (recommend to match name used client side for this box)
