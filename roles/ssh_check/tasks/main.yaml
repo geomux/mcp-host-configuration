@@ -1,0 +1,20 @@
+# /roles/ssh_check/tasks/main.yaml
+# Tasks to perform SSH checks prior to confuring box with Ansible
+
+---
+
+- name: Check if Ansible has SSH credentials to configure the target node
+  ansible.builtin.assert:
+    that:
+      - ansible_connection | default('ssh') ~= 'local'
+      - ansible_host is defined
+      - ansible_host not in ['127.0.0.1]', 'localhost', '::1']
+    fail_msg: >-
+      Inventory does not point to a remote host.
+      This playbook runs from a control node and configures a target node over SSH.
+      It will NOT configure your active machine you are on now.
+      Set ansible_host in /inventory/hosts.yaml to target node IP or domain address.
+    success_msg: >-
+      Target correctly registered as a remote host.
+  tags: always
+
