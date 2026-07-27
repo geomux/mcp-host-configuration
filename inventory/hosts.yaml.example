@@ -7,6 +7,6 @@
 mcp_hosts:
   hosts:
     box_1:
-      anisble_host: 000.0.000.00    # update to public IP address/domain address for box
+      ansible_host: 000.0.000.00    # update to public IP address/domain address for box
       ansible_user: ubuntu    # revise 'ubuntu' with the {user} name under /home/{user} on box
       ansible_ssh_private_key_file: ~/.ssh/key.pem    # rename 'key.pem' with your actual SSH key filename for box
