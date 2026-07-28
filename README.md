@@ -29,8 +29,8 @@ Stack:   playbook.yaml <--> roles/mcp_server + roles/nginx <--> templates/*.j2 <
 Requires Ansible on your workstation and SSH access to the target host. The target host box just needs Python installed.
 
 ```bash
-git clone https://github.com/geomux/mcp-host-setup.git
-cd mcp-host-setup
+git clone https://github.com/geomux/mcp-host-configuration.git
+cd mcp-host-configuration
 # edit inventory/hosts.yaml and group_vars/all.yaml first (see Configuration below)
 ansible-playbook playbook.yaml
 ```
@@ -85,7 +85,7 @@ Two ways to use this repo:
 
 ## Project Status
 
-- [x] Create host setup repo
+- [x] Create host configuration repo
 - [x] Write inventory and group_vars
 - [x] Write mcp_server role (install, config.toml, systemd unit)
 - [x] Write nginx role (reverse proxy to the server port)
