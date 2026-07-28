@@ -1,4 +1,4 @@
-# mcp-host-setup
+# mcp-host-configuration
 
 Ansible playbook that configures an existing host with a remote MCP server and an nginx reverse proxy. Ideal for a box you already own (an EC2 instance, other established VM) that you want accesible by MCP tools in one command, no containers involved.
 
