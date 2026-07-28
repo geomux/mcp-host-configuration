@@ -5,15 +5,16 @@
 
 - name: Verify target node accessible via SSH
   hosts: mcp_hosts
+  gather_facts: false
   roles:
   - role: ssh_check
-    tags: ssh_check
+    tags: always
 
 - name: Verify target node OS is supported
   hosts: mcp_hosts
   roles:
   - role: os_check
-    tags: os_check
+    tags: always
 
 - name: Configure host with mcp-server-remote behind nginx reverse proxy
   hosts: mcp_hosts
