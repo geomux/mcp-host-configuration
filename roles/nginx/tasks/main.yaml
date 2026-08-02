@@ -9,16 +9,67 @@
     state: present
     update_cache: true
 
-- name: Configure reverse proxy Config
-  ansible.builtin.template:
-    src: mcp.conf.j2
-    dest: /etc/nginx/sites-available/mcp.conf
+- name: Check TLS settings
+  ansible.builtin.assert:
+    that:
+    - mcp_tls_mode in ["selfsigned", "letsencrypt"]
+    - mcp_server_domain | length > 0
+    - not (mcp_tls_mode == "letsencrypt" and mcp_tls_email | length == 0)
+    fail_msg: >
+      Fix group_vars/all.yaml. Set mcp_server_domain, use a valid mcp_tls_mode, and set mcp_tls_email when mcp_tls_mode is "letsencrypt".
+
+- name: Create TLS directory
+  ansible.builtin.file:
+    path: "{{ mcp_tls_dir }}"
+    state: directory
+    mode: "0700"
+  when: mcp_tls_mode == "selfsigned"
+
+- name: Generate self-signed certificate
+  ansible.builtin.command:
+    cmd: >
+      openssl req -x509 -nodes -newkey rsa:2048 -days 825
+      -keyout {{ mcp_tls_dir }}/mcp.key
+      -out {{ mcp_tls_dir }}/mcp.crt
+      -subj "/CN={{ mcp_server_domain }}"
+      -addext "subjectAltName={{ mcp_tls_san }}"
+    creates: "{{ mcp_tls_dir }}/mcp.crt"
+  when: mcp_tls_mode == "selfsigned"
   notify: Reload nginx
 
-- name: Create symlink for mcp.conf in sites-enabled
+- name: Lock down the private key
   ansible.builtin.file:
-    src: /etc/nginx/sites-available/mcp.conf
-    dest: /etc/nginx/sites-enabled/mcp.conf
+    path: "{{ mcp_tls_dir }}/mcp.key"
+    mode: "0600"
+  when: mcp_tls_mode == "selfsigned"
+
+- name: Install certbot
+  ansible.builtin.apt:
+    name: certbot
+    state: present
+    update_cache: true
+  when: mcp_tls_mode == "letsencrypt"
+
+- name: Obtain a Let's Encrypt certificate
+  ansible.builtin.command:
+    cmd: >
+      certbot certonly --standalone --non-interactive --agree-tos
+      -m {{ mcp_tls_email }} -d {{ mcp_server_domain }}
+      --pre-hook "systemctl stop nginx" --post-hook "systemctl start nginx"
+    creates: "/etc/letsencrypt/live/{{ mcp_server_domain }}/fullchain.pem"
+  when: mcp_tls_mode == "letsencrypt"
+  notify: Reload nginx
+
+- name: Configure reverse proxy Config
+  ansible.builtin.template:
+    src: mcp-tls.conf.j2
+    dest: /etc/nginx/sites-available/mcp-tls.conf
+  notify: Reload nginx
+
+- name: Create symlink for mcp-tls.conf in sites-enabled
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/mcp-tls.conf
+    dest: /etc/nginx/sites-enabled/mcp-tls.conf
     state: link
   notify: Reload nginx
 
