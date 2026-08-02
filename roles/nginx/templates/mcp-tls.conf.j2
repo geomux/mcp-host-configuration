@@ -1,0 +1,36 @@
+# mcp-tls.conf.j2
+# [TEMPLATE] .j2 version of nginx default.conf Config file, setup by default to integrate with MCP server. HTTPS only.
+# TLS terminates here. All traffic to the MCP server from here stays on localhost as HTTP.
+
+{% if mcp_tls_mode == "letsencrypt" %}
+server {
+    listen 80;
+    server_name {{ mcp_server_domain }};
+    return 308 https://$host$request_uri;
+}
+{% endif %}
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name {{ mcp_server_domain }};
+
+{% if mcp_tls_mode == "letsencrypt" %}
+    ssl_certificate /etc/letsencrypt/live/{{ mcp_server_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ mcp_server_domain }}/privkey.pem;
+{% else %}
+    ssl_certificate {{ mcp_tls_dir }}/mcp.crt;
+    ssl_certificate_key {{ mcp_tls_dir }}/mcp.key;
+{% endif %}
+    ssl_protocols   TLSv1.2 TLSv1.3;
+    ssl_session_cache   shared:SSL:10m;
+
+    location {{ mcp_server_path }} {
+        proxy_pass http://127.0.0.1:{{ mcp_server_port }};
+        proxy_http_version 1.1;
+                proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+        proxy_read_timeout 3600s;
+    }
+}
