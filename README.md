@@ -1,4 +1,4 @@
-# mcp-host-configuration
+# mcp-host-configure
 
 Ansible playbook that configures an existing host with a remote MCP server and an nginx reverse proxy. Ideal for a box you already own (an EC2 instance, other established VM) that you want accesible by MCP tools in one command, no containers involved.
 
@@ -9,7 +9,7 @@ Ansible playbook that configures an existing host with a remote MCP server and a
 **Target Node OS: Linux (Ubuntu/Debian)**
 
 ```
-System:  {user} <--> mcp-client-console <--> internet <--> {host:80} <--> nginx <--> mcp-server-remote <--> tools
+System:  {user} <--> mcp-client-console <--> internet <--> {host:443} <--> nginx <--> mcp-server-remote <--> tools
 Stack:   playbook.yaml <--> roles/mcp_server + roles/nginx <--> templates/*.j2 <--> group_vars/all.yaml
 ```
 
@@ -22,15 +22,15 @@ Stack:   playbook.yaml <--> roles/mcp_server + roles/nginx <--> templates/*.j2 <
 | `inventory/hosts.yaml`     | The hosts to configure (IP, SSH user, key)                            |
 | `group_vars/all.yaml`      | Your settings: server name, port, auth token (edit before first run)  |
 | `roles/mcp_server/`       | Installs mcp-server-remote, writes config.toml, adds a systemd unit   |
-| `roles/nginx/`            | Installs nginx and proxies host port 80 to the server port            |
+| `roles/nginx/`            | Installs nginx and proxies host port 443 to the server port            |
 
 ## User Guide | Installation
 
 Requires Ansible on your workstation and SSH access to the target host. The target host box just needs Python installed.
 
 ```bash
-git clone https://github.com/geomux/mcp-host-configuration.git
-cd mcp-host-configuration
+git clone https://github.com/geomux/mcp-host-configure.git
+cd mcp-host-configure
 # edit inventory/hosts.yaml and group_vars/all.yaml first (see Configuration below)
 ansible-playbook playbook.yaml
 ```
