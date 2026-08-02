@@ -15,3 +15,10 @@ pipx_home: /opt/pipx # pipx stores venvs for packages here
 pipx_bin_dir: /usr/local/bin # pipx links the server executable here
 
 
+# --- TLS SETTINGS ---
+# This playbook only works with HTTPS. The choices below configure how to get the TLS certificate assigned.
+mcp_tls_mode: "selfsigned"  # OPTIONAL: change to "letsencrypt" to use Let's Encrypt instead of Self-Signed certificate
+mcp_server_domain: "box1.example.com"   # url to the MCP server (what clients use as the access URL). Crucial to use the same url as the client uses because the cert will match this.
+mcp_tls_dir: "/etc/nginx/tls"   # where the self-signed TLS cert keypair (cert & key) is located
+mcp_tls_san: "DNS:{{ mcp_server_domain }}"
+mcp_tls_email: ""   # completely optional. When this playbook switches to Let's Encrypt (instead of selfsigned) it will send expiration warnings to assigned email.
